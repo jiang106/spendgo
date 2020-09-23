@@ -1,0 +1,13 @@
+# node modules
+node_modules/*
+
+# VSCode
+.vscode
+
+# Mac OS X Hidden Files
+.DS_Store
+.DS_Store?
+*/.DS_Store
+
+# remove package-lock.json file because we are using yarn.lock
+package-lock.json
