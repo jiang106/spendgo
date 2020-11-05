@@ -3,74 +3,92 @@ const faker = require('faker');
 
 // const fixturePhone = faker.phone.phoneNumber('!##!##!###');
 // console.log(fixturePhone);
+const fixtureOptional = {
+  email: 'smithjoe@abcd.com',
+  name: {
+    last:'Smith',
+    first:'Joe'
+  },
+  password: 'Password123',
+  dob: '2000-01-01',
+  gender: 'm',
+  marital_status: 'married',
+  address: {
+   city: 'San Francisco', 
+   state: 'CA', 
+   street: '3rd Street', 
+   zip: '94107', 
+   country: 'US'
+  },
+  sms_opt_in: false, //member’s text subscription preference for your brand. Once the user has validated their account creation, they will be sent the text double opt-in flow to confirm their text subscription.
+  email_opt_in: false, //member’s email marketing preference for your brand.
+  verify_email: false
+}
+
+/** @serverCreateMember */
+// spendgo.serverCreateMember('2579066534', fixtureOptional)
+//   .then(data => console.log(data));
+
+/** @serverRetrieveBalance */
+// spendgo.serverRetrieveBalance('1009029')
+//   .then(data => console.log(data.result.rewards))
+
+/** @serverRetrieveRewardsByStore */
+// spendgo.serverRetrieveRewardsByStore('1009029','999999')
+//   .then(data => console.log(data.result.rewards));
 
 
-// spendgo.createMember('9312617267')
-//   .then(data => console.log(data))
 
-// spendgo.retrieveBalance('496812')
-//   .then(data => console.log(data))
-
-// spendgo.retrieveRewardsByStore('496812','999999')
-//   .then(data => console.log(data))
-
-
-const fixtureOptionalObject = {
-  id: '988654417',
-  source: 'web',
-  transaction: null,
-  status: 'checkout',
-  type: 'regular',
-  rendition: 'delivery',
-  currency: null,
-  placed: '2020-01-01T 12:00:00Z',
-  wanted: '2020-01-01T13:00:00Z',
-  subtotal: 10,
-  tax: 0.1,
-  tip: 0,
-  delivery: 0,
-  discount: 5,
-  total: 5.1,
-  address: [
+const fixtureBasket = {
+  // uuid: '572b564f-ae72-49ac-91cb-f177e21216f8',
+  rewards: [
       {
-          street: '123 Street',
-          cross: '',
-          city: 'San Francisco',
-          region: 'CA',
-          code: 94107,
-          country: 'USA'
+          provider: 'Spendgo',
+          id: 'A18',
+          level: 'basket',
+          discount: 5
+          // product: '0',
       }
   ],
-  payments: {
-      tender: 'credit',
-      issuer: 'visa',
-      suffix: '1234',
-      amount: 5.1
-  },
-  basket: {
-      uuid: '472b564f-ae72-49ac-91cb-f177e21216f8',
-      // rewards: [
-      //     {
-      //         provider: 'Spendgo',
-      //         id: '2234402',
-      //         level: 'basket',
-      //         product: '0',
-      //         discount: 5
-      //     }
-      // ],
-      posEntries: [
-          {
-              posItem: {
-                  product: '1082',
-                  cost: 5,
-                  categories: 'null',
-                  label: 'Turkey Sandwich'
-              },
-              quantity: 2
-          }
-      ]
-  }
-}
-// spendgo.orderTransaction('496812', '999999', '33804', fixtureOptionalObject)
-//   .then(data => console.log(data))
+  posEntries: [{                       // required
+    
+    posItem: {                        // required
+      // product   : '1082',
+      // categories: 'null',
+      cost    : 5,                   // required
+      label   : 'Turkey Sandwich'   // required
+    },
+    quantity: 2                   // required
 
+  },{
+    posItem: {                        // required
+      // product   : '1082',
+      // categories: 'null',
+      cost    : 6,                   // required
+      label   : 'Chicken Sandwich'   // required
+    },
+    quantity: 12                   // required
+  }]
+}
+/**order checkout and placed */
+// spendgo.orderCheckout('1009026', '999999', 'mobileweb', 84, 89, fixtureBasket)
+//   .then(data => console.log(data));
+  
+// spendgo.orderPlaced('1009026', '999999', 'mobileweb', 84, 89, fixtureBasket)
+//   .then(data => console.log(data));
+
+/**order billed and completed */
+// spendgo.orderBilled('1009029', '999999','9886544337', 'web', 160, 180, fixtureBasket)
+//   .then(data => {
+//     console.log(data)
+
+//     spendgo.orderCompleted('1009029', '999999','9886544337', 'web', 160, 180, fixtureBasket)
+//       .then(data => console.log(data));
+//   });
+
+/**order voided and refunded */
+// spendgo.orderVoided('1009026', '999999','988654417', 'mobileweb', 100, 120, fixtureBasket)
+//   .then(data => console.log(data));
+
+// spendgo.orderRefunded('1009029', '999999','9886544337', 'web', 160, 180, fixtureBasket)
+//   .then(data => console.log(data));

@@ -82,6 +82,16 @@ describe('# testing all Spendgo API', ()=>{
       expect(res.status).to.equal(202)
       expect(res.result).to.have.property('status').to.equal('WaitingEmailVerification')
     })
+
+    it('should success if phone existed', async function() {
+      let fixturePhone = faker.phone.phoneNumber('!##!##!###')
+      let res = await spendgo.serverCreateMember(fixturePhone)
+      let res2 = await spendgo.serverCreateMember(fixturePhone)
+      expect(res2.status).to.equal(200)
+      expect(res2.result).to.have.property('id')
+      expect(res2.result).to.have.property('status')
+    })
+
   })
 
   describe('# retrieve member balance', ()=> {
@@ -89,14 +99,15 @@ describe('# testing all Spendgo API', ()=>{
     // @spendgo_id: (STRING)
     // return { status: 200, result:{ quantity: 0, spend_threshold: 50, units: 'points', label: '$5 Off', rewards: []}}
     it('should success with result', async function() {
-      let fixtureSpendgoID = '496630'
-      let res = await spendgo.serverRetrieveBalance(fixtureSpendgoID)
-      expect(res.status).to.equal(200)
-      expect(res.result).to.have.property('quantity')
-      expect(res.result).to.have.property('spend_threshold')
-      expect(res.result).to.have.property('units').to.be.oneOf(['points','visits','stamps'])
-      expect(res.result).to.have.property('label')
-      expect(res.result).to.have.property('rewards').to.be.an('array')
+      let fixturePhone = faker.phone.phoneNumber('!##!##!###')
+      let res = await spendgo.serverCreateMember(fixturePhone)
+      let fixtureSpendgoID = res.result.id
+      let res2 = await spendgo.serverRetrieveBalance(fixtureSpendgoID)
+      expect(res2.status).to.equal(200)
+      expect(res2.result).to.have.property('quantity')
+      expect(res2.result).to.have.property('units').to.be.oneOf(['points','visits','stamps'])
+      expect(res2.result).to.have.property('label')
+      expect(res2.result).to.have.property('rewards').to.be.an('array')
     })
   })
 })

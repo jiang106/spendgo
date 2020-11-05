@@ -11,3 +11,6 @@ node_modules/*
 
 # remove package-lock.json file because we are using yarn.lock
 package-lock.json
+
+# PDF files
+pdf
